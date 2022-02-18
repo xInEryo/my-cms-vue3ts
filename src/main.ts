@@ -1,12 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-// import { registerApp } from './global'
 
-// import ElementPlus from 'element-plus'
-// import 'element-plus/dist/index.css'
-
+import 'normalize.css'
+import './assets/css/index.less'
 // import './service/axios_demo'
-import myRequest from './service'
+// import myRequest from './service'
 // 进行路由注册
 import router from './router'
 // 进行vuex注册
@@ -19,17 +17,20 @@ app.use(store)
 // app.use(ElementPlus)
 app.mount('#app')
 
-myRequest.request({
-  url: '/home/multidata',
-  method: 'GET',
-  interceptors: {
-    requestInterceptor(config) {
-      console.log('单个请求成功的拦截')
-      return config
-    },
-    responseInterceptor(res) {
-      console.log('单个响应成功的拦截')
-      return res
-    }
-  }
-})
+// interface DataType {
+//   data: any
+//   returnCode: string
+//   success: boolean
+// }
+
+// myRequest
+//   .get<DataType>({
+//     url: '/home/multidata'
+//     // method: 'GET'
+//     // showLoading: false
+//   })
+//   .then((res) => {
+//     console.log(res.data)
+//     console.log(res.returnCode)
+//     console.log(res.success)
+//   })
