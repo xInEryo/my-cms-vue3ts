@@ -38,8 +38,6 @@ class MyRequest {
     // 2. 所有实例都有的拦截
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('所有请求的拦截')
-
         if (this.showLoading) {
           this.loading = ElLoading.service({
             lock: true,
@@ -58,9 +56,7 @@ class MyRequest {
     )
     this.instance.interceptors.response.use(
       (res) => {
-        console.log('所有响应的拦截')
-
-        // 将loading移除
+        // 关闭加载遮罩层
         this.loading.close()
 
         const data = res.data
@@ -87,6 +83,7 @@ class MyRequest {
       if (config.showLoading === false) {
         this.showLoading = config.showLoading
       }
+
       this.instance
         .request<any, T>(config)
         .then((res) => {

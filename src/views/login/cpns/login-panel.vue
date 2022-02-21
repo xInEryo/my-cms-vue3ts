@@ -2,8 +2,8 @@
   <div class="login-panel">
     <h1 class="title">后台管理系统</h1>
 
-    <el-tabs type="border-card" stretch>
-      <el-tab-pane>
+    <el-tabs type="border-card" stretch v-model="currentTab">
+      <el-tab-pane name="account">
         <template #label>
           <span>
             <el-icon><user-filled style="top: 1px" /></el-icon>账号登录
@@ -11,13 +11,13 @@
         </template>
         <login-account ref="accountRef" />
       </el-tab-pane>
-      <el-tab-pane>
+      <el-tab-pane name="phone">
         <template #label>
           <span>
             <el-icon><iphone /></el-icon>手机登录
           </span>
         </template>
-        <login-phone />
+        <login-phone ref="phoneRef" />
       </el-tab-pane>
     </el-tabs>
 
@@ -46,21 +46,31 @@ export default defineComponent({
     LoginPhone
   },
   setup() {
+    // 属性
     const isKeepPassword = ref(true)
-
     // 在ts中 ref接受一个泛型 这个泛型可以明确value的类型
     // ref<T>(value: T)
     // ref中的值放在value中
     // InstanceType<typeof LoginAccount> 可以拿到组件实例的类型
     const accountRef = ref<InstanceType<typeof LoginAccount>>()
+    const phoneRef = ref<InstanceType<typeof LoginPhone>>()
 
+    const currentTab = ref<string>('account')
+
+    // 方法
     const handleLoginClick = () => {
-      accountRef.value?.loginAction(isKeepPassword.value)
+      if (currentTab.value === 'account') {
+        accountRef.value?.loginAction(isKeepPassword.value)
+      } else {
+        phoneRef.value?.loginAction()
+      }
     }
     return {
       isKeepPassword,
-      handleLoginClick,
-      accountRef
+      accountRef,
+      phoneRef,
+      currentTab,
+      handleLoginClick
     }
   }
 })

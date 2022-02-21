@@ -23,8 +23,14 @@ export default defineComponent({
       num: '',
       code: ''
     })
+
+    const loginAction = () => {
+      console.log('phoneLoginAction')
+    }
+
     return {
-      phone
+      phone,
+      loginAction
     }
   }
 })
