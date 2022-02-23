@@ -34,31 +34,35 @@ const loginModule: Module<ILoginState, IRootState> = {
   },
   actions: {
     async accountLoginAction({ commit }, payload: IAccount) {
-      // 1. 实现登录逻辑
-      //  1.1 发送网络请求
-      // await 等待promise完成，并将resolve的值返回
-      const loginResult = await accountLoginRequest(payload)
-      //  1.2 拿到token
-      const { id, token } = loginResult.data
-      // 1.3 将token保存在state中
-      commit('changeToken', token)
-      // 1.4 将token保存在localStorage中
-      localCache.setCache('token', token)
+      try {
+        // 1. 实现登录逻辑
+        //  1.1 发送网络请求
+        // await 等待promise完成，并将resolve的值返回
+        const loginResult = await accountLoginRequest(payload)
+        //  1.2 拿到token
+        const { id, token } = loginResult.data
+        // 1.3 将token保存在state中
+        commit('changeToken', token)
+        // 1.4 将token保存在localStorage中
+        localCache.setCache('token', token)
 
-      // 2.请求用户信息
-      const userInfoResult = await requestUserInfoById(id)
-      const userInfo = userInfoResult.data
-      commit('changeUserInfo', userInfo)
-      localCache.setCache('userInfo', userInfo)
+        // 2.请求用户信息
+        const userInfoResult = await requestUserInfoById(id)
+        const userInfo = userInfoResult.data
+        commit('changeUserInfo', userInfo)
+        localCache.setCache('userInfo', userInfo)
 
-      // 3.请求用户菜单
-      const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
-      const userMenus = userMenusResult.data
-      commit('changeUserMenus', userMenus)
-      localCache.setCache('userMenus', userMenus)
+        // 3.请求用户菜单
+        const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
+        const userMenus = userMenusResult.data
+        commit('changeUserMenus', userMenus)
+        localCache.setCache('userMenus', userMenus)
 
-      // 4.跳到首页
-      router.push('/main')
+        // 4.跳到首页
+        router.push('/main')
+      } catch (error) {
+        console.log(error)
+      }
     },
 
     // 初始化vuex

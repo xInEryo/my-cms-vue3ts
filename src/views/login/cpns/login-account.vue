@@ -31,7 +31,7 @@ export default defineComponent({
 
     const loginAction = (isKeepPassword: boolean) => {
       formRef.value?.validate((valid) => {
-        // 验证通过valid值为true
+        // 表单验证通过valid值为true
         if (valid) {
           // 1. 判断是否记住密码
           if (isKeepPassword) {

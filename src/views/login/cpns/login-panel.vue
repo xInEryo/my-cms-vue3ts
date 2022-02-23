@@ -5,16 +5,22 @@
     <el-tabs type="border-card" stretch v-model="currentTab">
       <el-tab-pane name="account">
         <template #label>
-          <span>
-            <el-icon><user-filled style="top: 1px" /></el-icon>账号登录
+          <span class="icon">
+            <el-icon>
+              <component
+                :is="$icon['el-icon-user-filled']"
+              ></component> </el-icon
+            >账号登录
           </span>
         </template>
         <login-account ref="accountRef" />
       </el-tab-pane>
       <el-tab-pane name="phone">
         <template #label>
-          <span>
-            <el-icon><iphone /></el-icon>手机登录
+          <span class="icon">
+            <el-icon>
+              <component :is="$icon['el-icon-iphone']"> </component> </el-icon
+            >手机登录
           </span>
         </template>
         <login-phone ref="phoneRef" />
@@ -34,14 +40,11 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { UserFilled, Iphone } from '@element-plus/icons-vue'
 import LoginAccount from './login-account.vue'
 import LoginPhone from './login-phone.vue'
 
 export default defineComponent({
   components: {
-    UserFilled,
-    Iphone,
     LoginAccount,
     LoginPhone
   },
@@ -86,8 +89,9 @@ export default defineComponent({
   }
 }
 
-.demo-tabs span {
+.icon {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 

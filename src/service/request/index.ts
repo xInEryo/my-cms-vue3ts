@@ -25,6 +25,9 @@ class MyRequest {
     this.showLoading = config.showLoading ?? DEFAULT_LOADING
 
     // 使用拦截器
+    // 对request拦截：调用顺序（最后执行的先调用）
+    // 对response拦截：调用顺序（先执行的先调用）
+
     // 1. 从config中取出的拦截器是对应每个实例的拦截器
     this.instance.interceptors.request.use(
       this.interceptors?.requestInterceptor,
@@ -51,7 +54,7 @@ class MyRequest {
       (err) => {
         // 关闭加载遮罩层
         this.loading.close()
-        return err
+        return Promise.reject(err)
       }
     )
     this.instance.interceptors.response.use(
@@ -67,7 +70,9 @@ class MyRequest {
         }
       },
       (err) => {
-        return err
+        // 关闭加载遮罩层
+        this.loading.close()
+        return Promise.reject(err)
       }
     )
   }
@@ -100,9 +105,7 @@ class MyRequest {
         })
         .catch((err) => {
           this.showLoading = DEFAULT_LOADING
-
           reject(err)
-          return err
         })
     })
   }

@@ -18,13 +18,13 @@ const myRequest = new MyRequest({
       return config
     },
     requestInterceptorCatch(err) {
-      return err
+      return Promise.reject(err)
     },
     responseInterceptor(config) {
       return config
     },
     responseInterceptorCatch(err) {
-      return err
+      return Promise.reject(err)
     }
   }
 })
