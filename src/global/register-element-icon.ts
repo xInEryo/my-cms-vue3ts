@@ -6,7 +6,11 @@ import {
   Goods,
   ChatLineRound,
   UserFilled,
-  Iphone
+  Iphone,
+  Fold,
+  Expand,
+  ArrowDown,
+  CircleClose
 } from '@element-plus/icons-vue'
 
 // 创建图标字典
@@ -16,7 +20,11 @@ const dictIcon = {
   'el-icon-goods': Goods,
   'el-icon-chat-line-round': ChatLineRound,
   'el-icon-user-filled': UserFilled,
-  'el-icon-iphone': Iphone
+  'el-icon-iphone': Iphone,
+  'el-icon-fold': Fold,
+  'el-icon-expand': Expand,
+  'el-icon-arrow-down': ArrowDown,
+  'el-icon-circle-close': CircleClose
 }
 
 // 导出通过 app.use()进行全局注册

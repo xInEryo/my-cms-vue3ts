@@ -9,6 +9,7 @@ import {
 } from '@/service/login/login'
 import localCache from '@/utils/cache'
 import router from '@/router'
+import { mapMenusToRoutes } from '@/utils/map-menus'
 
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
@@ -30,6 +31,13 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
+
+      // userMenus => routes 通过用户菜单找到对应路由
+      const routes = mapMenusToRoutes(userMenus)
+      // 将routes => router.main.children
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
     }
   },
   actions: {

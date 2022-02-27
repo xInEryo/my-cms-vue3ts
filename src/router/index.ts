@@ -12,16 +12,25 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/login',
+    name: 'login',
     // ()=>import("path") 表示懒加载
     component: () => import('@/views/login/login.vue')
   },
   {
     path: '/main',
+    name: 'main',
     // ()=>import("path") 表示懒加载
     component: () => import('@/views/main/main.vue')
+    // children:[] -> 根据userMenus来决定
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('@/views/not-found/not-found.vue')
   }
 ]
 
+// 配置路由
 const router = createRouter({
   routes,
   history: createWebHashHistory()
@@ -37,6 +46,7 @@ router.beforeEach((to) => {
       return '/login'
     }
   }
+
   // } else {
   //   if (token) {
   //     return '/main'

@@ -2,11 +2,12 @@
   <div class="nav-menu">
     <div class="logo">
       <img src="~@/assets/img/logo.svg" alt="logo" class="img" />
-      <span class="title">Vue3+TS</span>
+      <span v-if="!collapse" class="title">Vue3+TS</span>
     </div>
 
     <el-menu
       :unique-opened="true"
+      :collapse="collapse"
       class="el-menu-vertical"
       background-color="#0c2135"
       text-color="#b7bdc3"
@@ -25,7 +26,10 @@
             </template>
             <!-- 遍历里面的item -->
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id.toString()">
+              <el-menu-item
+                :index="subitem.id.toString()"
+                @click="handleMenuItemClick(subitem)"
+              >
                 <el-icon v-if="subitem.icon">
                   <component :is="$icon[subitem.icon]"></component>
                 </el-icon>
@@ -51,14 +55,28 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
+  props: {
+    collapse: {
+      type: Boolean,
+      default: false
+    }
+  },
   setup() {
     const store = useStore()
     const userMenus = computed(() => store.state.login.userMenus)
 
+    const router = useRouter()
+    const handleMenuItemClick = (item: any) => {
+      router.push({
+        path: item.url ?? '/not-found'
+      })
+    }
     return {
-      userMenus
+      userMenus,
+      handleMenuItemClick
     }
   }
 })
@@ -90,6 +108,11 @@ export default defineComponent({
   }
 
   // 目录
+
+  .el-menu {
+    border-right: none;
+  }
+
   .el-sub-menu {
     background-color: #001529 !important;
     // 二级菜单 ( 默认背景 )
