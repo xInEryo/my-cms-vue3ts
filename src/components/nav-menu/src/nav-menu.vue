@@ -6,6 +6,7 @@
     </div>
 
     <el-menu
+      :default-active="defaultValue"
       :unique-opened="true"
       :collapse="collapse"
       class="el-menu-vertical"
@@ -53,9 +54,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useStore } from '@/store'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { pathMapToMenu } from '@/utils/map-menus'
 
 export default defineComponent({
   props: {
@@ -65,10 +67,20 @@ export default defineComponent({
     }
   },
   setup() {
+    // store
     const store = useStore()
     const userMenus = computed(() => store.state.login.userMenus)
 
+    // router
     const router = useRouter()
+    //获取当前路由
+    const route = useRoute()
+    // 拿到当前路由路径
+    const currentPath = route.path
+    const currentMenu = pathMapToMenu(userMenus.value, currentPath)
+    //data
+    const defaultValue = ref(currentMenu.id + '')
+
     const handleMenuItemClick = (item: any) => {
       router.push({
         path: item.url ?? '/not-found'
@@ -76,7 +88,8 @@ export default defineComponent({
     }
     return {
       userMenus,
-      handleMenuItemClick
+      handleMenuItemClick,
+      defaultValue
     }
   }
 })

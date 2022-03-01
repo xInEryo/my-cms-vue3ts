@@ -5,10 +5,12 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import localCache from '@/utils/cache'
 
+import { firstMenu } from '@/utils/map-menus'
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/main'
   },
   {
     path: '/login',
@@ -47,11 +49,9 @@ router.beforeEach((to) => {
     }
   }
 
-  // } else {
-  //   if (token) {
-  //     return '/main'
-  //   }
-  // }
+  if (to.path === '/main') {
+    return firstMenu.url
+  }
 })
 
 export default router

@@ -10,7 +10,8 @@ import {
   Fold,
   Expand,
   ArrowDown,
-  CircleClose
+  CircleClose,
+  ArrowRight
 } from '@element-plus/icons-vue'
 
 // 创建图标字典
@@ -24,7 +25,8 @@ const dictIcon = {
   'el-icon-fold': Fold,
   'el-icon-expand': Expand,
   'el-icon-arrow-down': ArrowDown,
-  'el-icon-circle-close': CircleClose
+  'el-icon-circle-close': CircleClose,
+  'el-icon-arrow-right': ArrowRight
 }
 
 // 导出通过 app.use()进行全局注册

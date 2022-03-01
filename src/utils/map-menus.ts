@@ -1,4 +1,7 @@
+import { IBreadCrumb } from '@/base-ui/breadcrumb'
 import { RouteRecordRaw } from 'vue-router'
+
+let firstMenu: any = null
 
 export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   const routes: RouteRecordRaw[] = []
@@ -28,6 +31,9 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
         if (route) {
           routes.push(route)
         }
+        if (!firstMenu) {
+          firstMenu = menu
+        }
       } else {
         _recurseGetRoute(menu.children)
       }
@@ -36,3 +42,33 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   _recurseGetRoute(userMenus)
   return routes
 }
+
+// 通过路径找到 currentMenu ，也就是正在点击的菜单
+export function pathMapToMenu(
+  userMenus: any[],
+  currentPath: string,
+  breadcrumbs?: IBreadCrumb[]
+): any {
+  for (const menu of userMenus) {
+    if (menu.type === 1) {
+      const currentMenu = pathMapToMenu(menu.children ?? [], currentPath)
+      if (currentMenu) {
+        breadcrumbs?.push({ name: menu.name, path: '' })
+        breadcrumbs?.push({ name: currentMenu.name, path: '' })
+        return currentMenu
+      }
+    } else if (menu.type === 2 && menu.url === currentPath) {
+      return menu
+    }
+  }
+  return ''
+}
+
+// 通过调用pathMapToMenu把currentMenu的name,url以及上层的Menu的name,url放入数组
+export function pathMapBreadCrumb(userMenus: any[], currentPath: string) {
+  const breadcrumbs: IBreadCrumb[] = []
+  pathMapToMenu(userMenus, currentPath, breadcrumbs)
+  return breadcrumbs
+}
+
+export { firstMenu }
