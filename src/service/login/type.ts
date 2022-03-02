@@ -8,8 +8,3 @@ export interface ILoginResult {
   name: string
   token: string
 }
-
-export interface IData<T = any> {
-  coder: number
-  data: T
-}
