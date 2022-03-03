@@ -9,15 +9,13 @@ import router from './router'
 import store from './store'
 import { setupStore } from './store'
 
-// 注册全局图标
-import registerIcon from './global/register-element-icon'
+import globalRegister from '@/global'
 
 const app = createApp(App)
 
-app.use(registerIcon)
-
+app.use(globalRegister)
 app.use(store)
 setupStore()
-
 app.use(router)
+
 app.mount('#app')

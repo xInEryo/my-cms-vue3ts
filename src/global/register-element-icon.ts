@@ -13,7 +13,9 @@ import {
   CircleClose,
   ArrowRight,
   Search,
-  Refresh
+  Refresh,
+  Edit,
+  Delete
 } from '@element-plus/icons-vue'
 
 // 创建图标字典
@@ -30,7 +32,9 @@ const dictIcon = {
   'el-icon-circle-close': CircleClose,
   'el-icon-arrow-right': ArrowRight,
   'el-icon-search': Search,
-  'el-icon-refresh': Refresh
+  'el-icon-refresh': Refresh,
+  'el-icon-edit': Edit,
+  'el-icon-delete': Delete
 }
 
 // 导出通过 app.use()进行全局注册
