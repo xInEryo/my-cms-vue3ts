@@ -1,6 +1,8 @@
 <template>
   <div class="my-form">
-    <slot name="header"></slot>
+    <slot name="header">
+      <h2 class="title">高级检索</h2>
+    </slot>
     <el-form :label-width="labelWidth">
       <el-row>
         <template v-for="item in formItems" :key="item.label">
@@ -82,7 +84,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
-    // 拿到父组件传递的数据 并将其解构,生成新对象
+    // 拿到父组件传递的数据 并将其拷贝,生成新对象
     const formData = ref({ ...props.modelValue })
 
     // 监听数据变化，将变化后的数据传给父组件进行数据更新，实现双向绑定
@@ -104,5 +106,8 @@ export default defineComponent({
 <style scoped lang="less">
 .my-form {
   padding-top: 22px;
+  .title {
+    margin-top: 0;
+  }
 }
 </style>

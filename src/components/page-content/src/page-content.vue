@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <my-table :listData="userList" v-bind="contentTableConfig">
+    <my-table :listData="dataList" v-bind="contentTableConfig">
       <!--1. hander中的插槽 -->
       <template #headerHandler>
         <el-button type="primary">新建用户</el-button>
@@ -53,23 +53,29 @@ export default defineComponent({
     contentTableConfig: {
       type: Object,
       requied: true
+    },
+    pageName: {
+      type: String,
+      requied: true
     }
   },
-  setup() {
+  setup(prop) {
     const store = useStore()
     // 发起网络请求 请求数据
     store.dispatch('system/getPageListAction', {
-      pageUrl: '/users/list',
+      pageName: prop.pageName,
       queryInfo: {
         offset: 0,
         size: 10
       }
     })
 
-    const userList = computed(() => store.state.system.userList)
+    const dataList = computed(() =>
+      store.getters['system/pageListData'](prop.pageName)
+    )
     // const userCount = computed(() => store.state.system.userCount)
     return {
-      userList
+      dataList
     }
   }
 })

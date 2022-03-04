@@ -3,7 +3,9 @@
     <my-form v-bind="searchFormConfig" v-model="formData">
       <template #footer>
         <div class="handle-btns">
-          <el-button :icon="$icon['el-icon-refresh']">重置</el-button>
+          <el-button :icon="$icon['el-icon-refresh']" @click="handleResetClick"
+            >重置</el-button
+          >
           <el-button type="primary" :icon="$icon['el-icon-search']">
             搜索</el-button
           >
@@ -26,15 +28,25 @@ export default defineComponent({
   components: {
     MyForm
   },
-  setup() {
-    const formData = ref({
-      name: '',
-      password: '',
-      sport: '',
-      createTime: ''
-    })
+  setup(prop) {
+    // 双向绑定的属性应该是由配置文件的field决定
+    const formItems = prop.searchFormConfig.formItems ?? []
+    const formOriginData: any = {}
+    for (const item of formItems) {
+      formOriginData[item.field] = ''
+    }
+
+    const formData = ref(formOriginData)
+
+    const handleResetClick = () => {
+      for (const key in formData.value) {
+        formData.value[key] = ''
+      }
+    }
+
     return {
-      formData
+      formData,
+      handleResetClick
     }
   }
 })
