@@ -16,7 +16,7 @@ export const searchFormConfig: IFrom = {
       placeholder: '请输入角色名称'
     },
     {
-      field: 'createTime',
+      field: 'createAt',
       type: 'datepicker',
       label: '创建时间',
       otherOptions: {

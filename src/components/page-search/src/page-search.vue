@@ -6,7 +6,11 @@
           <el-button :icon="$icon['el-icon-refresh']" @click="handleResetClick"
             >重置</el-button
           >
-          <el-button type="primary" :icon="$icon['el-icon-search']">
+          <el-button
+            type="primary"
+            :icon="$icon['el-icon-search']"
+            @click="handleQueryClick"
+          >
             搜索</el-button
           >
         </div>
@@ -28,25 +32,33 @@ export default defineComponent({
   components: {
     MyForm
   },
-  setup(prop) {
+  emits: ['resetBtnClick', 'queryBtnClick'],
+  setup(prop, { emit }) {
     // 双向绑定的属性应该是由配置文件的field决定
     const formItems = prop.searchFormConfig.formItems ?? []
     const formOriginData: any = {}
     for (const item of formItems) {
       formOriginData[item.field] = ''
     }
-
     const formData = ref(formOriginData)
 
     const handleResetClick = () => {
-      for (const key in formData.value) {
-        formData.value[key] = ''
-      }
+      // for (const key in formData.value) {
+      //   formData.value[key] = ''
+      // }
+
+      formData.value = formOriginData
+      emit('resetBtnClick')
+    }
+
+    const handleQueryClick = () => {
+      emit('queryBtnClick', formData.value)
     }
 
     return {
       formData,
-      handleResetClick
+      handleResetClick,
+      handleQueryClick
     }
   }
 })
@@ -55,6 +67,6 @@ export default defineComponent({
 <style scoped>
 .handle-btns {
   text-align: right;
-  padding: 0 40px 15px 0;
+  padding: 0 60px 20px 0;
 }
 </style>

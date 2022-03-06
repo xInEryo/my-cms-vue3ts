@@ -1,13 +1,17 @@
 <template>
   <div class="my-form">
     <slot name="header">
-      <h2 class="title">高级检索</h2>
+      <!-- <h2 class="title">高级检索</h2> -->
     </slot>
     <el-form :label-width="labelWidth">
       <el-row>
         <template v-for="item in formItems" :key="item.label">
           <el-col v-bind="colLayout">
-            <el-form-item :label="item.label" :style="itemStyle">
+            <el-form-item
+              :label="item.label"
+              :style="itemStyle"
+              v-if="!item.isHidden"
+            >
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
               >
@@ -15,7 +19,8 @@
                   :placeholder="item.placeholder"
                   :show-password="item.type === 'password'"
                   v-bind="item.otherOptions"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:model-value="handleValueChange($event, item.field)"
                 />
               </template>
               <template v-else-if="item.type === 'select'">
@@ -23,21 +28,24 @@
                   :placeholder="item.placeholder"
                   style="width: 100%"
                   v-bind="item.otherOptions"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:model-value="handleValueChange($event, item.field)"
                 >
                   <el-option
                     v-for="option in item.options"
                     :key="option.value"
                     :value="option.value"
-                    >{{ option.title }}</el-option
+                    :label="option.title"
                   >
+                  </el-option>
                 </el-select>
               </template>
               <template v-else-if="item.type === 'datepicker'">
                 <el-date-picker
                   v-bind="item.otherOptions"
                   style="width: 100%"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:model-value="handleValueChange($event, item.field)"
                 ></el-date-picker>
               </template>
             </el-form-item>
@@ -50,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { IFormItem } from '../types'
 export default defineComponent({
   props: {
@@ -84,20 +92,24 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
-    // 拿到父组件传递的数据 并将其拷贝,生成新对象
-    const formData = ref({ ...props.modelValue })
+    // // 拿到父组件传递的数据 并将其拷贝,生成新对象
+    // const formData = ref({ ...props.modelValue })
 
-    // 监听数据变化，将变化后的数据传给父组件进行数据更新，实现双向绑定
-    watch(
-      formData,
-      (newValue) => {
-        emit('update:modelValue', newValue)
-      },
-      { deep: true }
-    )
+    // // 监听数据变化，将变化后的数据传给父组件进行数据更新，实现双向绑定
+    // watch(
+    //   formData,
+    //   (newValue) => {
+    //     emit('update:modelValue', newValue)
+    //   },
+    //   { deep: true }
+    // )
+
+    const handleValueChange = (value: any, field: string) => {
+      emit('update:modelValue', { ...props.modelValue, [field]: value })
+    }
 
     return {
-      formData
+      handleValueChange
     }
   }
 })
@@ -105,7 +117,7 @@ export default defineComponent({
 
 <style scoped lang="less">
 .my-form {
-  padding-top: 22px;
+  padding-top: 30px;
   .title {
     margin-top: 0;
   }
