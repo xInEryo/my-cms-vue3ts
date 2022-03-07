@@ -3,12 +3,14 @@ import login from './login/login'
 import system from './main/system/system'
 import { IRootState, IStore } from './types'
 import { getPageListData } from '@/service/main/system'
+import menu from '@/router/main/system/menu/menu'
 
 const store = createStore<IRootState>({
   state() {
     return {
       entireDepartment: [],
-      entireRole: []
+      entireRole: [],
+      entireMenu: []
     }
   },
   mutations: {
@@ -17,6 +19,9 @@ const store = createStore<IRootState>({
     },
     changeEntireRole(state, list) {
       state.entireRole = list
+    },
+    changeEntireMenu(state, list) {
+      state.entireMenu = list
     }
   },
   getters: {},
@@ -35,9 +40,13 @@ const store = createStore<IRootState>({
       })
       const { list: roleList } = roleResult.data
 
+      const menuResult = await getPageListData('/menu/list', {})
+      const { list: menuList } = menuResult.data
+
       // 2. 保存数据
       commit('changeEntireDepartment', departmentList)
       commit('changeEntireRole', roleList)
+      commit('changeEntireMenu', menuList)
     }
   },
   modules: {
@@ -49,7 +58,7 @@ const store = createStore<IRootState>({
 // 初始化vuex 将本地缓存内的数据放到vuex中
 export function setupStore() {
   store.dispatch('login/loadLocalLogin')
-  store.dispatch('getInitialDataAction')
+  // store.dispatch('getInitialDataAction')
 }
 
 export function useStore(): Store<IStore> {

@@ -90,4 +90,19 @@ export function mapMenusToPermissions(userMenus: any[]) {
   return permissions
 }
 
+export function menuMapLeafKeys(menuList: any[]) {
+  const leftKeys: number[] = []
+  const __resourceGetLeaf = (menuList: any[]) => {
+    for (const menu of menuList) {
+      if (menu.children) {
+        __resourceGetLeaf(menu.children)
+      } else {
+        leftKeys.push(menu.id)
+      }
+    }
+  }
+  __resourceGetLeaf(menuList)
+  return leftKeys
+}
+
 export { firstMenu }

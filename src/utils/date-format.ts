@@ -10,5 +10,6 @@ export function formatUtcString(
   utcString: string,
   format: string = DATA_TIME_FORMAT
 ) {
-  return dayjs.utc(utcString).format(format)
+  // utc对标的是0时区，北京时间处于东八区所以要偏移八个小时
+  return dayjs.utc(utcString).utcOffset(8).format(format)
 }
