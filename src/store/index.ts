@@ -1,9 +1,9 @@
 import { createStore, Store, useStore as useVuexStore } from 'vuex'
 import login from './login/login'
 import system from './main/system/system'
+import dashboard from './main/analysis/dashboard'
 import { IRootState, IStore } from './types'
 import { getPageListData } from '@/service/main/system'
-import menu from '@/router/main/system/menu/menu'
 
 const store = createStore<IRootState>({
   state() {
@@ -51,7 +51,8 @@ const store = createStore<IRootState>({
   },
   modules: {
     login,
-    system
+    system,
+    dashboard
   }
 })
 
